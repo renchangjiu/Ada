@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="sumuzhe的个人博客"/>
+    <meta name="author" content="sumuzhe"/>
+    <title>Ada-500</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            font-family: 'Nova Flat', cursive;
+            background-color: #B396FF;
+            color: #fff;
+        }
+
+        .pad-top {
+            padding-top: 60px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        #error-link {
+            font-size: 150px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row pad-top text-center">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <h1>啊咧, 服务器发生错误..... </h1>
+            <h3>请务必联系站长描述错误信息└(^o^)┘.</h3>
+            <h5>Now Contact Station Master Using Below LInk</h5>
+            <span id="error-link"></span>
+            <h2>! ERROR DECETED !</h2>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-8 col-md-offset-2">
+            <h3><i class="fa fa-lightbulb-o fa-5x"></i>
+            </h3>
+            <a href="contact" class="btn btn-primary">Contact Me</a><br/>
+        </div>
+    </div>
+</div>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/>
+<hr/>
+<footer>
+    <div style="text-align: center">
+        <p style="font-size: 13PX;">
+            <i>&copy; 2017- All Rights Reserved. more write, more read&nbsp;&nbsp;</i>
+            <a href="/" target="_blank" title="muzhe">Ada-BLOG</a>
+        </p>
+    </div>
+</footer>
+
+<script src="/js/common/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="/js/common/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/common/countUp.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    (function ($) {
+        "use strict";
+        let mainApp = {
+            main_fun: function () {
+                let count = new countUp("error-link", 10, 500, 0, 5); //CHANGE 404 TO THE ERROR VALUE AS YOU WANT
+                window.onload = function () {
+                    count.start();
+                }
+            },
+            initialization: function () {
+                mainApp.main_fun();
+            }
+        };
+        $(document).ready(function () {
+            mainApp.main_fun();
+        });
+    }(jQuery));
+</script>
+
+</body>
+</html>

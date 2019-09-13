@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.ArticleMapper">
+    <resultMap type="com.su.pojo.Article" id="artRM">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="summary" property="summary"/>
+        <result column="content" property="content"/>
+        <result column="readNum" property="readNum"/>
+        <result column="editTime" property="editTime"/>
+    </resultMap>
+
+    <select id="findArticleById" parameterType="int" resultMap="artRM">
+        select *
+        from t_article
+        where id = #{id}
+    </select>
+
+
+    <select id="list" resultMap="artRM">
+        SELECT id,
+        title,
+        summary,
+        tags,
+        readNum,
+        editTime
+        FROM t_article
+        ORDER BY editTime DESC
+        limit #{index}, #{length}
+    </select>
+
+
+    <select id="getTotalCount" resultType="int">
+        select count(id)
+        from t_article
+    </select>
+
+
+    <!-- 模糊查询title. summary, content-->
+    <select id="search" parameterType="String" resultMap="artRM">
+        select id,
+        title
+        from t_article
+        where title like "%"#{value}"%" or summary like "%"#{value}"%" or content like "%"#{value}"%"
+    </select>
+
+
+    <insert id="insert" parameterType="com.su.pojo.Article">
+        insert into t_article
+        values (null, #{title}, #{summary}, #{content}, #{tags}, now(), 0)
+    </insert>
+
+    <!-- 删除文章 -->
+    <delete id="delById" parameterType="int">
+        delete
+        from t_article
+        where id = #{id}
+    </delete>
+
+    <!--修改文章-->
+    <update id="update" parameterType="com.su.pojo.Article">
+        update t_article
+        set title = #{title},
+        summary = #{summary},
+        content = #{content},
+        tags = #{tags}
+        where id = #{id}
+    </update>
+
+    <!-- 阅读数 + 1 -->
+    <update id="increment" parameterType="int">
+        update t_article
+        set readNum = readNum + 1
+        where id = #{id}
+    </update>
+
+
+    <select id="exists" parameterType="int" resultType="int">
+        select id
+        from t_article
+        where id = #{id}
+    </select>
+
+
+    <!--根据tag id 模糊查询所有文章-->
+    <select id="findListByTagId" parameterType="String" resultMap="artRM">
+        select id,
+        title,
+        summary,
+        tags,
+        readNum,
+        editTime
+        from t_article
+        where tags like "%"#{value}"%"
+    </select>
+
+
+    <!-- 批量删除 -->
+    <!--&lt;!&ndash; 	<delete id="batchDel" parameterType="com.su.domain.CartItemCustom"> &ndash;&gt;-->
+    <!--&lt;!&ndash; 		delete from t_cartitem &ndash;&gt;-->
+    <!--&lt;!&ndash; 			<foreach collection="cartItemIds" item="cartItemId" open="where" separator="or"> &ndash;&gt;-->
+    <!--&lt;!&ndash; 					cartItemId = #{cartItemId}	 &ndash;&gt;-->
+    <!--&lt;!&ndash; 			</foreach> &ndash;&gt;-->
+    <!--&lt;!&ndash; 	</delete> &ndash;&gt;-->
+
+
+</mapper>

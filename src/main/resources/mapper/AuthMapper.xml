@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.AuthMapper">
+    <resultMap type="com.su.pojo.Admin" id="adminRM">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <!--<result column="level" property="level"/>-->
+    </resultMap>
+
+
+    <select id="findAdminByName" parameterType="String" resultMap="adminRM">
+        select name
+        from t_admin
+        where name = #{value}
+    </select>
+
+    <select id="findAdminByNameAndPassword" parameterType="com.su.pojo.Admin" resultMap="adminRM">
+        select *
+        from t_admin
+        where name = #{name} and password = #{password}
+    </select>
+
+
+</mapper>

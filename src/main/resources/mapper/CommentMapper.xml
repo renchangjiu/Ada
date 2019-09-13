@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.CommentMapper">
+    <resultMap type="com.su.pojo.Comment" id="commentRM">
+        <id column="id" property="id"/>
+        <result column="ip" property="ip"/>
+        <result column="content" property="content"/>
+        <result column="floor" property="floor"/>
+        <result column="name" property="name"/>
+        <result column="time" property="time"/>
+
+        <!-- 一对一映射文章表 -->
+        <association property="article" javaType="com.su.pojo.Article">
+            <id column="artId" property="id"/>
+            <result column="title" property="title"/>
+        </association>
+    </resultMap>
+
+    <!-- 评论列表, 关联所属文章信息 -->
+    <select id="list" resultMap="commentRM">
+        select c.*, a.title
+        from t_comment c left join t_article a on c.artId = a.id
+        order by time desc
+        limit #{index}, #{length}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(id)
+        from t_comment
+    </select>
+
+    <select id="findByArtId" parameterType="int" resultMap="commentRM">
+        select * from t_comment where artId = #{artId} order by time desc
+    </select>
+
+    <!--查询某文章下的所有评论的数量-->
+    <select id="getTotalCountGroupByArticle" parameterType="int" resultType="int">
+        select count(id) from t_comment where artId = #{artId}
+    </select>
+
+    <!--查询某文章下所有评论, 分页-->
+    <select id="findCommentsByArticleId" resultMap="commentRM">
+        select * from t_comment where artId = #{artId} order by time limit #{index}, #{length}
+    </select>
+
+    <!-- 查询当前文章的最大楼层 -->
+    <select id="findMaxFloorByArtId" parameterType="int" resultType="int">
+        select max(floor) from t_comment where artId = #{artId}
+    </select>
+
+    <!-- 插入评论 -->
+    <insert id="insert" parameterType="com.su.pojo.Comment">
+        insert into t_comment values (
+        null, #{ip}, #{article.id}, #{content}, #{floor}, #{name}, now()
+        )
+    </insert>
+
+    <!-- 删除文章时, 级联删除所属全部评论 -->
+    <delete id="deleteByArticleId" parameterType="int">
+        delete from t_comment
+        where artId = #{artId}
+    </delete>
+
+    <select id="findLastInsertTimeByIp" parameterType="String" resultType="Date">
+        select time from t_comment where ip = #{ip} order by time desc limit 0, 1
+    </select>
+
+    <delete id="delById" parameterType="int">
+        delete from t_comment where id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="int" resultMap="commentRM">
+        select * from t_comment where id = #{id}
+    </select>
+
+</mapper>

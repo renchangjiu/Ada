@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.LetterMapper">
+    <resultMap type="com.su.pojo.Letter" id="letterRm">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="email" property="email"/>
+        <result column="time" property="time"/>
+        <result column="isRead" property="isRead"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.su.pojo.Letter">
+        insert into t_letter values (
+        null, #{name}, #{email}, #{message}, now(), 0)
+    </insert>
+
+    <!-- 首页文章列表, 关联分类信息 -->
+    <select id="list" resultMap="letterRm">
+        SELECT *
+        FROM t_letter
+        ORDER BY time DESC
+        limit #{index}, #{length}
+    </select>
+
+
+    <select id="getTotalCount" resultType="int">
+        select count(id)
+        from t_letter
+    </select>
+
+    <!--<select id="list" parameterType="LetterCustom" resultMap="letterRm">-->
+    <!--select * from t_letter-->
+    <!--<where>-->
+    <!--<if test="isRead != null and isRead != ''">-->
+    <!--and is_read = #{isRead}-->
+    <!--</if>-->
+    <!--</where>-->
+    <!--order by send_date desc-->
+    <!--</select>-->
+
+    <delete id="delete" parameterType="int">
+        delete from t_letter
+        where id = #{letId}
+    </delete>
+
+    <select id="findById" parameterType="int" resultMap="letterRm">
+        select * from t_letter where id = #{id}
+    </select>
+
+
+</mapper>

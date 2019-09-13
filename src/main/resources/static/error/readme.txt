@@ -1,0 +1,1 @@
+此目录下的HTML 用于覆盖spring boot 默认的错误页面

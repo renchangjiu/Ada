@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.OperationMapper">
+    <resultMap type="com.su.pojo.Operation" id="operationRm">
+        <id column="id" property="id"/>
+        <result column="time" property="time"/>
+        <result column="table" property="table"/>
+        <result column="type" property="type"/>
+        <result column="message" property="message"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.su.pojo.Operation">
+        insert into t_operation values (
+        null, now(), #{table}, #{type}, #{message})
+    </insert>
+
+
+    <select id="list" resultMap="operationRm">
+        SELECT *
+        FROM t_operation
+        ORDER BY time DESC
+        limit #{index}, #{length}
+    </select>
+
+
+    <select id="getTotalCount" resultType="int">
+        select count(id)
+        from t_operation
+    </select>
+
+
+    <select id="findById" parameterType="int" resultMap="operationRm">
+        select * from t_operation where id = #{id}
+    </select>
+
+
+</mapper>

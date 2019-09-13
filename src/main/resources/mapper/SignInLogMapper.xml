@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.mapper.SignInLogMapper">
+    <resultMap type="com.su.pojo.SignInLog" id="signInLogRM">
+        <id column="id" property="id"/>
+        <result column="ip" property="ip"/>
+        <result column="time" property="time"/>
+    </resultMap>
+
+
+    <select id="list" resultMap="signInLogRM">
+        select *
+        from t_sign_in_log
+        order by time desc
+        limit #{index}, #{length}
+    </select>
+
+
+    <select id="getTotalCount" resultType="int">
+        select count(id)
+        from t_sign_in_log
+    </select>
+
+
+    <insert id="insert" parameterType="com.su.pojo.SignInLog">
+        insert into t_sign_in_log values (null, #{ip}, now())
+    </insert>
+
+
+</mapper>
