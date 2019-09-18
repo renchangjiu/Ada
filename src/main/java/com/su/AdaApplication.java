@@ -5,6 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+/**
+ * @author su
+ * @date 2019/9/18 8:44
+ */
 @EnableAsync
 @SpringBootApplication
 @MapperScan("com.su.mapper")
