@@ -35,21 +35,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setContentType("application/json; charset=utf-8");
         ServletOutputStream writer = response.getOutputStream();
-        String headerToken = request.getHeader("token");
+        String token = request.getHeader("token");
         // 没有token header
-        if (StringUtil.isEmpty(headerToken)) {
+        if (StringUtil.isEmpty(token) || "null".equals(token)) {
             Result result = Result.failed(401, "need header:token");
             writer.print(JsonUtil.objectToJson(result));
             return false;
         }
         // Redis 里没有该token
-        if (!redis.exists(preToken + headerToken)) {
+        if (!redis.exists(preToken + token)) {
             Result result = Result.failed(401, "Need to SignIn");
             writer.print(JsonUtil.objectToJson(result));
             return false;
         }
-        // 通过拦截器, 刷新该token 的过期时间
-        redis.expire(preToken + headerToken, 60 * 60 * 24L, TimeUnit.SECONDS);
+        // 通过拦截器, 刷新该 token 的过期时间
+        redis.expire(preToken + token, 60 * 60 * 24L, TimeUnit.SECONDS);
         return true;
     }
 

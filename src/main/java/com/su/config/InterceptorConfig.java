@@ -6,13 +6,19 @@ import com.su.interceptor.SignInLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author su
+ * @date 2019/10/16 10:59
+ */
 @Configuration
-public class InterceptorConfig extends WebMvcConfigurerAdapter {
+public class InterceptorConfig implements WebMvcConfigurer {
 
 
-    // 提前注入
+    /**
+     * 提前注入
+     */
     @Autowired
     private AuthInterceptor authInterceptor;
 
@@ -30,7 +36,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(readLogInterceptor).addPathPatterns("/api/article/**");
 
         registry.addInterceptor(signInLogInterceptor).addPathPatterns("/api/sign-in");
-        super.addInterceptors(registry);
+        // addInterceptors(registry);
     }
 
 
