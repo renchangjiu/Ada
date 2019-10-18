@@ -1,18 +1,21 @@
 package com.su.controller.back;
 
-import com.su.exception.MyException;
 import com.su.pojo.Admin;
 import com.su.pojo.Result;
 import com.su.utils.*;
 import com.su.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
+
+/**
+ * @author su
+ * @date 2019/10/18 17:10
+ */
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -23,34 +26,38 @@ public class AuthController {
     @Autowired
     private RedisOperator redis;
 
-    // 登录
+
+    /**
+     * 登录
+     */
     @RequestMapping("/sign-in")
-    public Result signIn(Admin formAdmin, String captchaId, String captchaValue, HttpServletRequest request) {
+    public Result<?> signIn(Admin formAdmin, String captchaId, String captchaValue, HttpServletRequest request) {
         // 数据完整性校验
         if (StringUtil.isEmpty(formAdmin.getName()) || StringUtil.isEmpty(formAdmin.getPassword())) {
-            return Result.failed("请填写用户名或密码或验证码");
+            return Result.error("请填写用户名或密码或验证码");
         }
 
         String ip = IpUtil.getIp(request);
 
         // 验证码校验
         if (!validateCaptcha(captchaId, captchaValue, ip)) {
-            return Result.failed("验证码错误");
+            return Result.error("验证码错误");
         }
         try {
-            Admin admin = as.signIn(formAdmin);
+            Result<Admin> result = as.signIn(formAdmin);
+            if (result.isNotSuccess()) {
+                // 如果登录失败, 则设置需要验证码, 方法是: 在Redis设置一个key为 "ip", value为y的键值对
+                this.setNeedCaptcha(ip);
+                return Result.error(result.getMessage());
+            }
             // 校验通过, 用户信息写入redis, key: token, value: user, 设置过期时间
             String token = UUIDUtil.uuid();
-            String adminJson = JsonUtil.objectToJson(admin);
+            String adminJson = JsonUtil.objectToJson(result.getData());
             redis.set("TOKEN:" + token, adminJson);
             redis.expire("TOKEN:" + token, 60 * 60 * 24L, TimeUnit.SECONDS);
             this.setNotNeedCaptcha(ip);
             // 返回token
-            return Result.success(token, 1);
-        } catch (MyException me) {
-            // 如果登录失败, 则设置需要验证码, 方法是: 在Redis设置一个key为 "ip", value为y的键值对
-            this.setNeedCaptcha(ip);
-            return Result.failed(me.getData().toString());
+            return Result.success(token);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
