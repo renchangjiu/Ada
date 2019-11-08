@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MyException.class)
     @ResponseBody
     public Result myExceptionHandler(MyException e) {
-        return Result.failed(450, e.getData().toString());
+        return Result.error(450, e.getData().toString());
     }
 
     /**
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NumberFormatException.class)
     @ResponseBody
     public Result myNumberFormatExceptionHandler(NumberFormatException e) {
-        return Result.failed(415, "请求参数格式错误");
+        return Result.error(415, "请求参数格式错误");
     }
 
 
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(Exception e) {
         e.printStackTrace();
-        return Result.failed(0, "some system exception");
+        return Result.error(0, "some system exception");
     }
 
 

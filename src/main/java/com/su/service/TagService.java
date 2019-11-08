@@ -34,7 +34,7 @@ public class TagService {
     public Result delete(Integer id) throws Exception {
         List<Article> articles = articleService.findListByTagId(id);
         if (articles.size() > 0) {
-            return Result.failed(315, "当前分类下还有文章, 你需要在删除此分类下所有文章之后再执行操作");
+            return Result.error(315, "当前分类下还有文章, 你需要在删除此分类下所有文章之后再执行操作");
         }
         this.tm.delete(id);
         return Result.success();

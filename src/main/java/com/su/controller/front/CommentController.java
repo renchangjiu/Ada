@@ -32,7 +32,7 @@ public class CommentController {
     public Result send(Comment comment, HttpServletRequest request) throws Exception {
         // 数据完整性校验
         if (StringUtil.isEmpty(comment.getContent())) {
-            return Result.failed("评论内容不能为空");
+            return Result.error("评论内容不能为空");
         }
         if (StringUtil.isEmpty(comment.getName())) {
             comment.setName("匿名");

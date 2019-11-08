@@ -41,7 +41,7 @@ public class TagController {
     public Result insert(Tag tag) throws Exception {
         // 校验
         if (tag.getName().trim().length() < 2 || tag.getName().trim().length() > 20) {
-            return Result.failed("标签名称应大于等于2个字符并小于等于20个字符");
+            return Result.error("标签名称应大于等于2个字符并小于等于20个字符");
         }
         ts.insert(tag);
         return Result.success(1, "success");

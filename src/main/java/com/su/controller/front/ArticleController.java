@@ -34,7 +34,7 @@ public class ArticleController {
     public Result show(@PathVariable String id) throws Exception {
         Article article = as.findById(Integer.parseInt(id));
         if (article == null) {
-            return Result.failed(414, "目标文章没有找到");
+            return Result.error(414, "目标文章没有找到");
         }
         return Result.success(article);
     }
@@ -56,7 +56,7 @@ public class ArticleController {
     public Result findListByTagId(@PathVariable String tagId) throws Exception {
         List<Article> articles = as.findListByTagId(Integer.parseInt(tagId));
         if (articles.size() == 0) {
-            return Result.failed(416, "请求标签下没有文章");
+            return Result.error(416, "请求标签下没有文章");
         }
         return Result.success(articles);
     }

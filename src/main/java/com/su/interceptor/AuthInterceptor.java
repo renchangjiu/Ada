@@ -38,13 +38,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         // 没有token header
         if (StringUtil.isEmpty(token) || "null".equals(token)) {
-            Result result = Result.failed(401, "need header:token");
+            Result result = Result.error(401, "need header:token");
             writer.print(JsonUtil.objectToJson(result));
             return false;
         }
         // Redis 里没有该token
         if (!redis.exists(preToken + token)) {
-            Result result = Result.failed(401, "Need to SignIn");
+            Result result = Result.error(401, "Need to SignIn");
             writer.print(JsonUtil.objectToJson(result));
             return false;
         }

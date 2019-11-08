@@ -38,7 +38,7 @@ public class ArticleController {
     public Result writeArticle(Article article) throws Exception {
 
         if (StringUtil.isEmpty(article.getTitle()) || StringUtil.isEmpty(article.getSummary()) || StringUtil.isEmpty(article.getContent()) || StringUtil.isEmpty(article.getTags())) {
-            return Result.failed(0, "缺少必要字段");
+            return Result.error(0, "缺少必要字段");
         } else {
             as.insert(article);
             return Result.success(0, "success");
@@ -50,7 +50,7 @@ public class ArticleController {
     @RequestMapping("/article/update")
     public Result updateArticle(Article article, String isEdit) throws Exception {
         if (StringUtil.isEmpty(article.getTitle()) || StringUtil.isEmpty(article.getSummary()) || StringUtil.isEmpty(article.getContent()) || StringUtil.isEmpty(article.getTags())) {
-            return Result.failed(0, "缺少必要字段");
+            return Result.error(0, "缺少必要字段");
         } else {
             as.update(article);
             return Result.success(0, "success");

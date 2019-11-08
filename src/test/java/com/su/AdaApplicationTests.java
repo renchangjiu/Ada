@@ -2,7 +2,6 @@ package com.su;
 
 import com.su.service.ArticleService;
 import com.su.utils.Log;
-import com.su.utils.MailOperator;
 import com.su.utils.RedisOperator;
 import com.su.utils.StringUtil;
 import org.junit.Test;
@@ -33,8 +32,6 @@ public class AdaApplicationTests {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private MailOperator mail;
 
     @Test
     public void test() throws Exception {

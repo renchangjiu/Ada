@@ -26,7 +26,7 @@ public class LetterController {
     public Result send(Letter letter) throws Exception {
         // 1. 数据合法性校验
         if (StringUtil.isEmpty(letter.getMessage())) {
-            return Result.failed("message是必填项");
+            return Result.error("message是必填项");
         }
         // 2. 为非必填项设置默认值
         if (StringUtil.isEmpty(letter.getName())) {
